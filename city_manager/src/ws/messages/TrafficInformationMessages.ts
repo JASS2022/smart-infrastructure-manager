@@ -35,7 +35,7 @@ export interface DuckieBot {
     id: UUID
     name: string
     picture: string
-    lastSeen: Date
+    lastSeen: string
 }
 
 export interface Roundabout {
