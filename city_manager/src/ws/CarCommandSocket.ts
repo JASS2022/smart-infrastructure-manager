@@ -12,7 +12,7 @@ export class TrafficInformationSocket {
 
         this.wss.on("connection", ws => {
             const id = this.nextId++;
-            this.subscribers[id] = ws;
+            this.subscribers.set(id, ws);
             ws.on("close", () => this.subscribers.delete(id));
             ws.on("message", (message) => {});
             ws.onerror = () => this.subscribers.delete(id);
