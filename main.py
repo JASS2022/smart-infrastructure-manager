@@ -1,10 +1,12 @@
 
 import asyncio
-import websockets
+from websockets import client
 import json
 from Roundabout_manager import Roundabout_manager
 from Roundabout import Roundabout
 from Geofence import Geofence
+
+# receive from CityManager
 
 
 def city_manager_events_controller(roundabout_manager, city_manager_ws):
@@ -39,7 +41,7 @@ def city_manager_events_controller(roundabout_manager, city_manager_ws):
 
 async def main():
     try:
-        city_manager_ws = websockets.connect("ws://localhost:8765")
+        city_manager_ws = client.connect("ws://localhost:8765")
         roundabout = Roundabout([1.1, 2.1, 3.1, 4.1], [1.2, 2.2, 3.2, 4.2])
         roundabout_manager = Roundabout_manager(
             roundabout, Geofence(roundabout), None)
@@ -50,8 +52,22 @@ async def main():
             payload = json.loads(await city_manager_ws.recv())
             event_handlers_lookup_table[payload['type']](payload)
 
-    except websockets.ConnectionClosed as e:
+    except client.ConnectionClosed as e:
         print('exiting')
+
+# send to CityManager
+
+
+def send_move_command(self, car):
+    move_command = {
+        "type": "carMoveCommand",
+        "data": {
+                "carId": car.id,
+        }
+
+    }
+
+# send to View
 
 
 def get_view_info(self):
