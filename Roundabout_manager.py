@@ -19,6 +19,7 @@ class Roundabout_manager:
                   payload["exit"], datetime, State.WAITING)
       # add to waiting queue
         self.geofence.wait_queue.append(car)
+        self.geofence.increase_waiting_cars_count()
 
     def enter_roundabout(self, car_id):
 
@@ -27,13 +28,15 @@ class Roundabout_manager:
             if car.car_id == car_id:
                 self.geofence.wait_queue.remove(car)
 
-        # add to inroundabout queue
-        self.roundabout.inroudabout.append(car)
+            # add to inroundabout queue
+
+        self.roundabout.inroundabout_queue.append(car)
+        self.roundabout.increase_current_capacity()
 
     def exit(self, car_id):
-        for car in self.roundabout.inroudabout:
+        for car in self.roundabout.inroundabout_queue:
             if car.car_id == car_id:
-                self.roundabout.inroudabout.remove(car)
+                self.roundabout.inroundabout_queue.remove(car)
 
     # def manage_roundabout(self):
     # while True:

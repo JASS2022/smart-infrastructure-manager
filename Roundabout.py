@@ -6,7 +6,7 @@ class Roundabout:
         self.exits = exits
         self.maxCapacity = 8
         self.current_capacity = 0
-        self.inroundabout = []
+        self.inroundabout_queue = []
 
-    def get_current_capacity(self):
-        self.current_capacity = self.inroundabout.count
+    def increase_current_capacity(self):
+        self.current_capacity += 1
