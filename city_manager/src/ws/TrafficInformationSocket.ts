@@ -25,9 +25,6 @@ export class TrafficInformationSocket {
 		});
 	}
 
-	// broadcastMessage(message: TrafficInformationMessage) {
-	//     this.subscribers.forEach((subscriber) => subscriber.send(JSON.stringify(message)))
-	// }
 	broadcastLocationUpdate(
 		id: string,
 		x_loc: number,
