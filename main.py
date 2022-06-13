@@ -1,14 +1,14 @@
 import asyncio
 import websockets
 import json
-import RoundaboutManager
+import Roundabout_manager
 
 
-def event_controller(carClass):
+def event_controller(roundabout_manager):
 
     def handle_car_entering(payload):
         print("CAR ENTERING")
-        registerCar(payload)
+        roundabout_manager.register_car(payload)
         print(payload)
 
     def handle_car_exiting(payload):
