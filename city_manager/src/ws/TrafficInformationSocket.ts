@@ -8,17 +8,17 @@ import {
 	TrafficInformationMessage,
 } from "./messages/TrafficInformationMessages";
 import { Coordinate, UUID } from "./messages/shared";
+import * as uuid from "uuid";
 
 export class TrafficInformationSocket {
 	// TODO: add type for subscriber
-	private subscribers: Map<number, any>;
-	private nextId = 0;
+	private subscribers: Map<UUID, ws.WebSocket> = new Map<UUID, ws.WebSocket>();
 	private wss: ws.Server;
 
 	constructor() {
-		this.wss = new ws.Server({ port: 8080 });
+		this.wss = new ws.Server({ port: 8082 });
 		this.wss.on("connection", (ws) => {
-			const id = this.nextId++;
+			const id = uuid.v4();
 			this.subscribers.set(id, ws);
 			ws.on("close", () => this.subscribers.delete(id));
 			ws.onerror = () => this.subscribers.delete(id);

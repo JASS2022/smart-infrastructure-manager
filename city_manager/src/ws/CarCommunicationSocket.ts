@@ -13,7 +13,7 @@ import {
 import {CarCommand, CarCommandMessage} from "./messages/CarCommandMessages";
 
 export class CarCommunicationSocket {
-    private subscribers: Map<UUID, ws.WebSocket>;
+    private subscribers: Map<UUID, ws.WebSocket> = new Map<UUID, ws.WebSocket>();
     private wss: ws.Server
 
     constructor(props: {
