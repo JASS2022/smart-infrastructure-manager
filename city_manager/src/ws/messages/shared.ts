@@ -15,3 +15,12 @@ const Locator = {
     74: "GIU Enter",
     6: "GIU Exit"
 }
+
+const LocatorCoordinates = {
+    96: {x: 2, y: 4},
+    20: {x: 3, y: 3},
+    2: {x: 0, y: 2},
+    7: {x: 1, y: 1},
+    74: {x: 2, y: 0},
+    6: {x: 3, y: 1}
+}

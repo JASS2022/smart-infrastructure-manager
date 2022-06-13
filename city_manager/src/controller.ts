@@ -8,6 +8,8 @@ interface DuckieBotState {
     id: UUID
     lastKnownLocation: Coordinate
     status: CarStatus
+    speed: "slow" | "fast"
+    isInRoundabout: boolean
     lastSeen: Date
 }
 
@@ -22,7 +24,7 @@ export class SmartCityController {
     constructor() {
         this.trafficInformationSocket = new TrafficInformationSocket();
         this.drivePermissionSocket = new DrivePermissionSocket((carId) => {
-            this.carCommunicationSocket.sendCarCommand(carId, "start");
+            this.carCommunicationSocket.sendCarCommand(carId, "enterRoundabout");
         });
         this.carCommunicationSocket = new CarCommunicationSocket({
             onCarConnect: (id) => {
@@ -33,6 +35,8 @@ export class SmartCityController {
                         velocity: 0,
                         batteryLevel: 0,
                     },
+                    speed: "fast",
+                    isInRoundabout: false,
                     lastSeen: new Date(),
                 });
             },
@@ -55,7 +59,21 @@ export class SmartCityController {
                     roundabout: null,
                 });
 
-                // TODO: check if we enter roundabout
+                // TODO: move to own function
+                const roundaboutEnterings = [{x: 0, y: 2}, {x: 2, y: 0}, {x: 2, y: 4}];
+                const isEnteringRoundabout = roundaboutEnterings.map((c) => c.x == newLocation.x && c.y == newLocation.y)
+                    .reduce((p, c) => p || c, false);
+
+                if (isEnteringRoundabout) {
+                    console.log(`Car ${id} is entering a roundabout`);
+                    this.carCommunicationSocket.sendCarCommand(id, "stop");
+                    this.drivePermissionSocket.requestRoundaboutPermission(id, newLocation, roundaboutEnterings[0]);
+                }
+
+                if (newLocation.x == 3 && newLocation.y == 3) {
+                    // exiting roundabout
+                    this.carCommunicationSocket.sendCarCommand(id, "exitRoundabout");
+                }
             },
             onSpeedBumpDetected: (id, location) => {
                 // TODO
