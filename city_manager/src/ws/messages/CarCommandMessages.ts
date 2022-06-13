@@ -1,4 +1,4 @@
-export type CarCommand = "start" | "stop" | "slowDown" | "speedUp" | "turnRight" | "turnLeft";
+export type CarCommand = "start" | "stop" | "slowDown" | "speedUp" | "enterRoundabout" | "exitRoundabout";
 
 export interface CarCommandMessage {
     type: "command"
