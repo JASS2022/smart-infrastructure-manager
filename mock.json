@@ -1,8 +1,73 @@
-{ "events": [{
-    "id":"813ed8f8-b128-400b-959c-57583e3921a7",
-    "location":{
-        "x" : 0,
-        "y" : 1
-    },
-    "trip"
-}] }
+{
+    "events": [
+        {
+            "id": "813ed8f8-b128-400b-959c-57583e3921a7",
+            "location": {
+                "x": 2,
+                "y": 0
+            },
+            "trip": [
+                {
+                    "x": 0,
+                    "y": 1
+                }
+            ],
+            "state": "normal",
+            "velocity": 5,
+            "batteryLevel": 1,
+            "roundabout": "55d79b9e-8990-4f8e-bc62-81196621b492"
+        },
+        {
+            "id": "ace19792-06be-40d0-a4be-d85f2e4bca6b",
+            "location": {
+                "x": 3,
+                "y": 1
+            },
+            "trip": [
+                {
+                    "x": 3,
+                    "y": 3
+                }
+            ],
+            "state": "normal",
+            "velocity": 5,
+            "batteryLevel": 1,
+            "roundabout": "55d79b9e-8990-4f8e-bc62-81196621b492"
+        },
+        {
+            "id": "813ed8f8-b128-400b-959c-57583e3921a7",
+            "location": {
+                "x": 0,
+                "y": 2
+            },
+            "trip": [
+                {
+                    "x": 0,
+                    "y": 1
+                }
+            ],
+            "state": "waiting",
+            "velocity": 5,
+            "batteryLevel": 1,
+            "roundabout": "55d79b9e-8990-4f8e-bc62-81196621b492"
+        },
+        {
+            "id": "ace19792-06be-40d0-a4be-d85f2e4bca6b",
+            "location": {
+                "x": 2,
+                "y": 0
+            },
+            "trip": [
+                {
+                    "x": 3,
+                    "y": 3
+                }
+            ],
+            "state": "normal",
+            "velocity": 5,
+            "batteryLevel": 1,
+            "roundabout": "55d79b9e-8990-4f8e-bc62-81196621b492"
+        }
+
+    ]
+}
