@@ -26,24 +26,24 @@ export class TrafficInformationSocket {
 	}
 
 	broadcastLocationUpdate(
-		id: string,
-		x_loc: number,
-		y_loc: number,
-		state: "normal" | "autonomous" | "waiting",
-		x_dest: number,
-		y_dest: number,
-		velocity?: number,
-		batteryLevel?: number,
-		roundabout?: string
+		trafficInfo: {
+			id: UUID,
+			location: Coordinate,
+			state: "normal" | "autonomous" | "waiting",
+			trip: Coordinate[],
+			velocity?: number,
+			batteryLevel?: number,
+			roundabout?: string
+		}
 	) {
 		const data: LocationUpdate = {
-			id: id,
-			location: { x: x_loc, y: y_loc },
-			trip: [{ x: x_dest, y: y_dest }],
-			state: state,
-			velocity: velocity,
-			batteryLevel: batteryLevel,
-			roundabout: roundabout,
+			id: trafficInfo.id,
+			location: trafficInfo.location,
+			trip: trafficInfo.trip,
+			state: trafficInfo.state,
+			velocity: trafficInfo.velocity,
+			batteryLevel: trafficInfo.batteryLevel,
+			roundabout: trafficInfo.roundabout,
 		};
 		this.subscribers.forEach((subscriber) =>
 			subscriber.send(JSON.stringify(data))

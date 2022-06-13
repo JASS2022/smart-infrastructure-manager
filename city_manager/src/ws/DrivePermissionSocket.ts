@@ -9,7 +9,6 @@ import {Coordinate, UUID} from "./messages/shared";
 import * as uuid from "uuid";
 
 export class DrivePermissionSocket {
-    // TODO: add type for subscriber
     private subscribers: Map<UUID, ws.WebSocket>;
     private wss: ws.Server
 

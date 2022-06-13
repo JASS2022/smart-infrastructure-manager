@@ -7,12 +7,14 @@ export interface CarLocationUpdateMessage {
     }
 }
 
+export interface CarStatus {
+    velocity: number
+    batteryLevel: number
+}
+
 export interface CarStatusUpdate {
     type: "statusUpdate"
-    data: {
-        velocity: number
-        batteryLevel: number
-    }
+    data: CarStatus
 }
 
 export interface SpeedBumpDetectedMessage {
