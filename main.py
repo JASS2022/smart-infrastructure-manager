@@ -4,22 +4,23 @@ import json
 import Roundabout_manager
 
 
-def event_controller(roundabout_manager):
 
-    def handle_car_entering(payload):
+def city_manager_events_controller(roundabout_manager,city_manager_ws):
+
+    async def handle_car_entering(payload):
         print("CAR ENTERING")
         roundabout_manager.register_car(payload)
         print(payload)
 
-    def handle_car_exiting(payload):
+    async def handle_car_exiting(payload):
         print("CAR EXITING")
         print(payload)
 
-    def handle_car_update(payload):
+    async def handle_car_update(payload):
         print("CAR UPDATE")
         print(payload)
 
-    def handle_car_go_around(payload):
+    async def handle_car_go_around(payload):
         print("CAR GO AROUND")
         print(payload)
 
@@ -33,16 +34,17 @@ def event_controller(roundabout_manager):
     return event_handlers_lookup_table
 
 
-async def message_event_loop(event_handlers_lookup_table):
-    async with websockets.connect("ws://localhost:8765") as websocket:
+async def main():
+    try:
+        city_manager_ws = websockets.connect("ws://localhost:8765")
+        event_handlers_lookup_table = city_manager_events_controller(None,city_manager_ws)
         while True:
-            try:
-                # simply wait forever until the connection is closed
-                payload = json.loads(await websocket.recv())
-                event_handlers_lookup_table[payload['type']](payload)
-            except websockets.ConnectionClosed as e:
-                print('exiting')
-                break
+            # simply wait forever until the connection is closed
+            payload = json.loads(await city_manager_ws.recv())
+            event_handlers_lookup_table[payload['type']](payload)
+
+    except websockets.ConnectionClosed as e:
+        print('exiting')
 
 
-asyncio.run(message_event_loop(event_controller(None)))
+asyncio.run(main())
