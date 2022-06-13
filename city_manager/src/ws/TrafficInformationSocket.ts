@@ -68,7 +68,7 @@ export class TrafficInformationSocket {
 			subscriber.send(JSON.stringify(data))
 		);
 	}
-	broadcastRoundaboutsMessage(
+	broadcastRoundaboutsMessageUpdate(
 		id: string,
 		address: string,
 		x_up: number,
