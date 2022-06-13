@@ -25,5 +25,5 @@ class Car:
     def get_waiting_time(self):
         return datetime.datetime.now() - self.inGeofence
 
-    def update_path(self, path):
-        self.path = path
+    def update_path(self, segment):
+        self.path.append(segment)
