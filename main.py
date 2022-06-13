@@ -14,6 +14,7 @@ def city_manager_events_controller(roundabout_manager,city_manager_ws):
 
     async def handle_car_exiting(payload):
         print("CAR EXITING")
+        roundabout_manager.exit(payload["carId"])
         print(payload)
 
     async def handle_car_update(payload):

@@ -2,33 +2,42 @@
 from Car import Car
 from Car import State
 import datetime
+import Geofence
 
 
 class Roundabout_manager:
-    def __init__(self, roundabout, strategy):
+    def __init__(self, roundabout, geofence, strategy):
         self.roundabout = roundabout
-        self.wait_queue = []
-        self.inroundabout = []
         self.strategy = strategy
         self.segments = 8
+        self.geofence = geofence
         # self.occupancy = np.zeros((10, self.segments))
 
-    def register_car(self, payload):
+    def enter_geofence(self, payload):
+      # instatiate car from payload
         car = Car(payload["id"], payload["entry"],
                   payload["exit"], datetime, State.WAITING)
-        self.enter(car)
+      # add to waiting queue
+        self.geofence.wait_queue.append(car)
+
+    def enter_roundabout(self, car_id):
+
+        # remove from geofence wait queue
+        for car in self.geofence.wait_queue:
+            if car.car_id == car_id:
+                self.geofence.wait_queue.remove(car)
+
+        # add to inroundabout queue
+        self.roundabout.inroudabout.append(car)
+
+    def exit(self, car_id):
+        for car in self.roundabout.inroudabout:
+            if car.car_id == car_id:
+                self.roundabout.inroudabout.remove(car)
 
     # def manage_roundabout(self):
     # while True:
     # sleep(60 - time() % 60)
-
-    def enter(self, car):
-        #self.path = generate_path(car.entrance, car.exit)
-        # car.set_path(self.path)
-        self.wait_queue.append(car)
-
-    def exit(self, car):
-        self.wait_queue.remove(car)
 
     # def do_controlling(self):
     #     toGo = self.strategy.do_scheduling(self.wait_queue, self.occupancy)
