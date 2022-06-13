@@ -8,7 +8,7 @@ export class TrafficInformationSocket {
     private wss: ws.Server
 
     constructor() {
-        this.wss = new ws.Server({ port: 8080 });
+        this.wss = new ws.Server({ port: 8082 });
 
         this.wss.on("connection", ws => {
             const id = this.nextId++;
