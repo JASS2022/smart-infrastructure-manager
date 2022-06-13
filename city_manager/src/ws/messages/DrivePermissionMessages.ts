@@ -1,11 +1,11 @@
-import {AprilTag, UUID} from "./shared";
+import {AprilTag, Coordinate, UUID} from "./shared";
 
 export interface CarEnteringMessage {
     type: "carEntering",
     data: {
         carId: UUID,
-        entry: AprilTag, // should we change this to coordinates?
-        exit: AprilTag,
+        entry: Coordinate,
+        exit: Coordinate,
     }
 }
 
