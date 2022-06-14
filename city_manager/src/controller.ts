@@ -1,7 +1,7 @@
 import {TrafficInformationSocket} from "./ws/TrafficInformationSocket";
 import {DrivePermissionSocket} from "./ws/DrivePermissionSocket";
 import {CarCommunicationSocket} from "./ws/CarCommunicationSocket";
-import {Coordinate, UUID} from "./ws/messages/shared";
+import {Coordinate, Locator, LocatorCoordinates, UUID} from "./ws/messages/shared";
 import {CarStatus} from "./ws/messages/CarStatusMessages";
 
 interface DuckieBotState {
@@ -75,7 +75,7 @@ export class SmartCityController {
                 });
 
                 // TODO: move to own function
-                const roundaboutEnterings = [{x: 0, y: 2}, {x: 2, y: 0}, {x: 2, y: 4}];
+                const roundaboutEnterings = [ LocatorCoordinates[Locator["Pyramids Enter"]], LocatorCoordinates[Locator["Hotel Enter"]],LocatorCoordinates[Locator["GIU Enter"]]];
                 const isEnteringRoundabout = roundaboutEnterings.map((c) => c.x == newLocation.x && c.y == newLocation.y)
                     .reduce((p, c) => p || c, false);
 
