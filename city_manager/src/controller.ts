@@ -30,7 +30,7 @@ export class SmartCityController {
             onCarConnect: (id, trip) => {
                 this.duckieBots.set(id, {
                     id,
-                    trip:trip,
+                    trip: trip,
                     lastKnownLocation: {x: 0, y: 0},
                     status: {
                         velocity: 0,
@@ -52,15 +52,13 @@ export class SmartCityController {
 
                 //bump section start
 
-                
-                if(this.bumpSet.has(newLocation))
-                {   //slow down on bump detection
+
+                if (this.bumpSet.has(newLocation)) {   //slow down on bump detection
                     this.carCommunicationSocket.sendCarCommand(id, "slowDown");
                 }
 
-                
-                if(!this.bumpSet.has(newLocation) && carState.speed == "slow")
-                {
+
+                if (!this.bumpSet.has(newLocation) && carState.speed == "slow") {
                     //speed up after passing bump
                     this.carCommunicationSocket.sendCarCommand(id, "speedUp");
                 }
@@ -77,7 +75,11 @@ export class SmartCityController {
                 });
 
                 // TODO: move to own function
-                const roundaboutEnterings = [ LocatorCoordinates[Locator["Pyramids Enter"]], LocatorCoordinates[Locator["Hotel Enter"]],LocatorCoordinates[Locator["GIU Enter"]]];
+                const roundaboutEnterings = [
+                    LocatorCoordinates[Locator["Pyramids Enter"]],
+                    LocatorCoordinates[Locator["Hotel Enter"]],
+                    LocatorCoordinates[Locator["GIU Enter"]],
+                ];
                 const isEnteringRoundabout = roundaboutEnterings.map((c) => c.x == newLocation.x && c.y == newLocation.y)
                     .reduce((p, c) => p || c, false);
 
@@ -87,8 +89,8 @@ export class SmartCityController {
                     this.drivePermissionSocket.requestRoundaboutPermission(id, newLocation, roundaboutEnterings[0]);
                 }
                 // get trip array from car, which includes only one element: then destination and compare with actual destination x and y coordinates
-                 const tripStops = carState.trip.length
-                if (newLocation.x == carState.trip[tripStops - 1].x  && newLocation.y == carState.trip[tripStops - 1].y ) {
+                const tripStops = carState.trip.length
+                if (newLocation.x == carState.trip[tripStops - 1].x && newLocation.y == carState.trip[tripStops - 1].y) {
                     // exiting roundabout
                     this.carCommunicationSocket.sendCarCommand(id, "exitRoundabout");
                 }
