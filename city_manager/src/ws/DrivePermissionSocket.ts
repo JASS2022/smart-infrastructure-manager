@@ -20,16 +20,21 @@ export class DrivePermissionSocket {
             this.subscribers.set(id, ws);
             ws.on("close", () => this.subscribers.delete(id));
             ws.on("message", (rawMsg: RawData) => {
-                const message = JSON.parse(rawMsg.toString()) as Record<string, any>;
+                try {
+                    console.log("received message", rawMsg.toString());
+                    const message = JSON.parse(rawMsg.toString()) as Record<string, any>;
 
-                switch (message["type"]) {
-                    case "carMoveCommand":
-                        const drivePermission = message as EnterRoundaboutPermissionMessage;
-                        onReceiveDrivePermission(drivePermission.data.carId);
-                        break;
-                    default:
-                        console.error(`received invalid message: ${message}`);
-                        return;
+                    switch (message["type"]) {
+                        case "carMoveCommand":
+                            const drivePermission = message as EnterRoundaboutPermissionMessage;
+                            onReceiveDrivePermission(drivePermission.data.carId);
+                            break;
+                        default:
+                            console.error(`received invalid message: ${message}`);
+                            return;
+                    }
+                } catch (e) {
+                    console.error("Caught error while handling message", e, rawMsg.toString());
                 }
             });
             ws.onerror = () => this.subscribers.delete(id);

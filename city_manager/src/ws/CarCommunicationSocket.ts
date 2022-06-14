@@ -31,28 +31,33 @@ export class CarCommunicationSocket {
                 this.subscribers.delete(id);
             });
             ws.on("message", (rawMsg: RawData) => {
-                const message = JSON.parse(rawMsg.toString()) as Record<string, any>;
+                try {
+                    console.log("received message", rawMsg.toString());
+                    const message = JSON.parse(rawMsg.toString()) as Record<string, any>;
 
-                switch (message["type"]) {
-                    case "locationUpdate":
-                        const locationMessage = message as CarLocationUpdateMessage;
-                        props.onLocationUpdate(id, LocatorCoordinates[locationMessage.data.aprilTag]);
-                        break;
-                    case "statusUpdate":
-                        const statusMessage = message as CarStatusUpdate;
-                        props.onStatusUpdate(id, statusMessage.data);
-                        break;
-                    case "speedBumpDetected":
-                        const speedBumpMessage = message as SpeedBumpDetectedMessage;
-                        props.onSpeedBumpDetected(id, LocatorCoordinates[speedBumpMessage.data.aprilTag]);
-                        break;
-                    case "initialCarLocation":
-                        const initialCarLocationMessage = message as InitialCarLocationMessage;
-                        props.onCarConnect(id,initialCarLocationMessage.data.trip);
-                        break;
-                    default:
-                        console.error(`received invalid message: ${message}`);
-                        return;
+                    switch (message["type"]) {
+                        case "locationUpdate":
+                            const locationMessage = message as CarLocationUpdateMessage;
+                            props.onLocationUpdate(id, LocatorCoordinates[locationMessage.data.aprilTag]);
+                            break;
+                        case "statusUpdate":
+                            const statusMessage = message as CarStatusUpdate;
+                            props.onStatusUpdate(id, statusMessage.data);
+                            break;
+                        case "speedBumpDetected":
+                            const speedBumpMessage = message as SpeedBumpDetectedMessage;
+                            props.onSpeedBumpDetected(id, LocatorCoordinates[speedBumpMessage.data.aprilTag]);
+                            break;
+                        case "initialCarLocation":
+                            const initialCarLocationMessage = message as InitialCarLocationMessage;
+                            props.onCarConnect(id, initialCarLocationMessage.data.trip);
+                            break;
+                        default:
+                            console.error(`received invalid message: ${message}`);
+                            return;
+                    }
+                } catch (e) {
+                    console.error("Caught error while handling message", e, rawMsg.toString());
                 }
             });
             ws.onerror = () => {
