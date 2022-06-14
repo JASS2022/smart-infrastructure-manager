@@ -19,7 +19,6 @@ export class SmartCityController {
     private carCommunicationSocket: CarCommunicationSocket
     private duckieBots = new Map<UUID, DuckieBotState>()
     private bumpset = new Set<Coordinate>;
-    private speedBumps: Coordinate[] = [];
 
     constructor() {
         this.trafficInformationSocket = new TrafficInformationSocket();
