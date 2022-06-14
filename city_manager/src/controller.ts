@@ -7,6 +7,7 @@ import {CarStatus} from "./ws/messages/CarStatusMessages";
 interface DuckieBotState {
     id: UUID
     lastKnownLocation: Coordinate
+    trip: Coordinate[]
     status: CarStatus
     speed: "slow" | "fast"
     isInRoundabout: boolean
@@ -26,9 +27,10 @@ export class SmartCityController {
             this.carCommunicationSocket.sendCarCommand(carId, "enterRoundabout");
         });
         this.carCommunicationSocket = new CarCommunicationSocket({
-            onCarConnect: (id) => {
+            onCarConnect: (id, trip) => {
                 this.duckieBots.set(id, {
                     id,
+                    trip:trip,
                     lastKnownLocation: {x: 0, y: 0},
                     status: {
                         velocity: 0,
@@ -84,12 +86,12 @@ export class SmartCityController {
                     this.carCommunicationSocket.sendCarCommand(id, "stop");
                     this.drivePermissionSocket.requestRoundaboutPermission(id, newLocation, roundaboutEnterings[0]);
                 }
-
-                if (newLocation.x == 3 && newLocation.y == 3) {
+                // get trip array from car, which includes only one element: then destination and compare with actual destination x and y coordinates
+                 const tripStops = carState.trip.length
+                if (newLocation.x == carState.trip[tripStops - 1].x  && newLocation.y == carState.trip[tripStops - 1].y ) {
                     // exiting roundabout
                     this.carCommunicationSocket.sendCarCommand(id, "exitRoundabout");
                 }
-
 
             },
             onSpeedBumpDetected: (id, location) => {

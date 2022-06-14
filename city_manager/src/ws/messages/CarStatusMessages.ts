@@ -1,4 +1,4 @@
-import {AprilTag} from "./shared";
+import {AprilTag, Coordinate, UUID} from "./shared";
 
 export interface CarLocationUpdateMessage {
     type: "locationUpdate"
@@ -21,5 +21,13 @@ export interface SpeedBumpDetectedMessage {
     type: "speedBumpDetected"
     data: {
         aprilTag: AprilTag
+    }
+}
+
+export interface InitialCarLocationMessage {
+    type: "initialCarLocation"
+    data: {
+        id: UUID
+        trip: Coordinate[]
     }
 }

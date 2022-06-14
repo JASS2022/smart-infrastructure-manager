@@ -1,13 +1,11 @@
 import * as ws from "ws";
-import {TrafficInformationMessage} from "./messages/TrafficInformationMessages";
 import {Coordinate, UUID, LocatorCoordinates} from "./messages/shared";
 import * as uuid from "uuid";
 import {RawData} from "ws";
-import {EnterRoundaboutPermissionMessage} from "./messages/DrivePermissionMessages";
 import {
     CarLocationUpdateMessage,
     CarStatus,
-    CarStatusUpdate,
+    CarStatusUpdate, InitialCarLocationMessage,
     SpeedBumpDetectedMessage
 } from "./messages/CarStatusMessages";
 import {CarCommand, CarCommandMessage} from "./messages/CarCommandMessages";
@@ -17,7 +15,7 @@ export class CarCommunicationSocket {
     private wss: ws.Server
 
     constructor(props: {
-        onCarConnect: (id: UUID) => void,
+        onCarConnect: (id: UUID, trip: Coordinate[]) => void,
         onCarDisconnect: (id: UUID) => void,
         onLocationUpdate: (id: UUID, newLocation: Coordinate) => void,
         onStatusUpdate: (id: UUID, status: CarStatus) => void,
@@ -28,10 +26,8 @@ export class CarCommunicationSocket {
         this.wss.on("connection", (ws) => {
             const id = uuid.v4();
             this.subscribers.set(id, ws);
-            props.onCarConnect(id);
 
             ws.on("close", () => {
-                props.onCarConnect(id);
                 this.subscribers.delete(id);
             });
             ws.on("message", (rawMsg: RawData) => {
@@ -48,7 +44,11 @@ export class CarCommunicationSocket {
                         break;
                     case "speedBumpDetected":
                         const speedBumpMessage = message as SpeedBumpDetectedMessage;
-                        props.onSpeedBumpDetected(id, LocatorCoordinates[locationMessage.data.aprilTag]);
+                        props.onSpeedBumpDetected(id, LocatorCoordinates[speedBumpMessage.data.aprilTag]);
+                        break;
+                    case "initialCarLocation":
+                        const initialCarLocationMessage = message as InitialCarLocationMessage;
+                        props.onCarConnect(id,initialCarLocationMessage.data.trip);
                         break;
                     default:
                         console.error(`received invalid message: ${message}`);
@@ -56,7 +56,6 @@ export class CarCommunicationSocket {
                 }
             });
             ws.onerror = () => {
-                props.onCarConnect(id);
                 this.subscribers.delete(id);
             };
         });
