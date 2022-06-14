@@ -1,6 +1,6 @@
 import * as ws from "ws";
 import {TrafficInformationMessage} from "./messages/TrafficInformationMessages";
-import {Coordinate, UUID} from "./messages/shared";
+import {Coordinate, UUID, LocatorCoordinates} from "./messages/shared";
 import * as uuid from "uuid";
 import {RawData} from "ws";
 import {EnterRoundaboutPermissionMessage} from "./messages/DrivePermissionMessages";
@@ -40,8 +40,7 @@ export class CarCommunicationSocket {
                 switch (message["type"]) {
                     case "locationUpdate":
                         const locationMessage = message as CarLocationUpdateMessage;
-                        // TODO: call the april tag to location translator here
-                        props.onLocationUpdate(id, {x: 2, y: 0});
+                        props.onLocationUpdate(id, LocatorCoordinates[locationMessage.data.aprilTag]);
                         break;
                     case "statusUpdate":
                         const statusMessage = message as CarStatusUpdate;
@@ -49,10 +48,7 @@ export class CarCommunicationSocket {
                         break;
                     case "speedBumpDetected":
                         const speedBumpMessage = message as SpeedBumpDetectedMessage;
-                        // TODO: call the april tag to location translator here
-                        // translate bump aprilTag to coordinates
-
-                        props.onSpeedBumpDetected(id, {x: 0, y: 0});
+                        props.onSpeedBumpDetected(id, LocatorCoordinates[locationMessage.data.aprilTag]);
                         break;
                     default:
                         console.error(`received invalid message: ${message}`);

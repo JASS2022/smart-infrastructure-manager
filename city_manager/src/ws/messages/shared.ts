@@ -17,7 +17,7 @@ const Locator = {
     0: "Speed Bump"
 }
 
-const LocatorCoordinates = {
+export const LocatorCoordinates: Record<number, Coordinate> = {
     96: {x: 2, y: 4},
     20: {x: 3, y: 3},
     2: {x: 2, y: 0},
