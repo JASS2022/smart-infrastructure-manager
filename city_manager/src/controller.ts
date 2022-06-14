@@ -17,8 +17,8 @@ export class SmartCityController {
     private trafficInformationSocket: TrafficInformationSocket
     private drivePermissionSocket: DrivePermissionSocket
     private carCommunicationSocket: CarCommunicationSocket
-
     private duckieBots = new Map<UUID, DuckieBotState>()
+    private bumpset = new Set<Coordinate>;
     private speedBumps: Coordinate[] = [];
 
     constructor() {
@@ -49,6 +49,21 @@ export class SmartCityController {
                 carState.lastSeen = new Date();
                 this.duckieBots.set(id, carState);
 
+                //bump section start
+
+                //slow down on bump detection
+                if(this.bumpset.has(newLocation))
+                {
+                    this.carCommunicationSocket.sendCarCommand(id, "slowDown");
+                }
+
+                //speed up after passing bump
+                if(!this.bumpset.has(newLocation) && carState.speed == "slow")
+                {
+                    this.carCommunicationSocket.sendCarCommand(id, "speedUp");
+                }
+                //bump section end
+
                 this.trafficInformationSocket.broadcastLocationUpdate({
                     id,
                     location: carState.lastKnownLocation,
@@ -74,9 +89,11 @@ export class SmartCityController {
                     // exiting roundabout
                     this.carCommunicationSocket.sendCarCommand(id, "exitRoundabout");
                 }
+
+
             },
             onSpeedBumpDetected: (id, location) => {
-                // TODO
+                this.bumpset.add(location)
             },
             onStatusUpdate: (id, status) => {
                 const carState = this.duckieBots.get(id);
