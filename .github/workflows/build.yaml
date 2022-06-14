@@ -28,6 +28,6 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: city_manager
           push: true
           tags: mfink99/jass22:latest
