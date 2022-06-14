@@ -28,11 +28,16 @@ def city_manager_events_controller(roundabout_manager, city_manager_ws):
         print("CAR GO AROUND")
         print(data)
 
+    async def handle_car_location_update(data):
+        print("CAR LOCATION UPDATE")
+        print(data)
+
     event_handlers_lookup_table = {
         'carEntering': handle_car_entering,
         'carExiting': handle_car_exiting,
         'carUpdate': handle_car_update,
-        'carGoAround': handle_car_go_around
+        'carGoAround': handle_car_go_around,
+        'locationUpdate':handle_car_location_update
     }
 
     return event_handlers_lookup_table
@@ -52,7 +57,7 @@ async def main():
 
         return roundabout_statistics
 
-
+    city_manager_ws = None
     try:
         city_manager_ws = await client.connect("ws://localhost:8765")
         roundabout = Roundabout([1.1, 2.1, 3.1, 4.1], [1.2, 2.2, 3.2, 4.2])
@@ -69,7 +74,7 @@ async def main():
     except ConnectionClosed as e:
         print('exiting')
     except KeyError as e:
-        print('error : bad payload')
+        print('error : bad payload : ',e)
     except Exception as e:
         print('unknown error : ',e)
     finally:
