@@ -26,4 +26,4 @@ class Car:
         return datetime.datetime.now() - self.inGeofence
 
     def update_path(self, segment):
-        self.path.append(segment)
+        self.path = segment

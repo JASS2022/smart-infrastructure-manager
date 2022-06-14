@@ -38,6 +38,12 @@ class Roundabout_manager:
             if car.car_id == car_id:
                 self.roundabout.inroundabout_queue.remove(car)
 
+    def update_path(self, payload):
+        for car in self.roundabout.inroundabout_queue:
+            if car.car_id == payload["carId"]:
+                segment = [payload["location"]["x"], payload["location"]["y"]]
+                car.update_path(segment)
+
     # def manage_roundabout(self):
     # while True:
     # sleep(60 - time() % 60)
