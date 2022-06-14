@@ -28,6 +28,7 @@ export class CarCommunicationSocket {
             this.subscribers.set(id, ws);
 
             ws.on("close", () => {
+                props.onCarDisconnect(id);
                 this.subscribers.delete(id);
             });
             ws.on("message", (rawMsg: RawData) => {
@@ -62,6 +63,7 @@ export class CarCommunicationSocket {
             });
             ws.onerror = () => {
                 this.subscribers.delete(id);
+                props.onCarDisconnect(id);
             };
         });
     }

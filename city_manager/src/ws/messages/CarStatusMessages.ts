@@ -27,7 +27,6 @@ export interface SpeedBumpDetectedMessage {
 export interface InitialCarLocationMessage {
     type: "initialCarLocation"
     data: {
-        id: UUID
         trip: Coordinate[]
     }
 }

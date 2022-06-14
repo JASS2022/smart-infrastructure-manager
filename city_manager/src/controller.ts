@@ -28,6 +28,7 @@ export class SmartCityController {
         });
         this.carCommunicationSocket = new CarCommunicationSocket({
             onCarConnect: (id, trip) => {
+                console.log(`new car connected: ${id}`);
                 this.duckieBots.set(id, {
                     id,
                     trip: trip,
@@ -43,8 +44,13 @@ export class SmartCityController {
             },
             onCarDisconnect: (id) => this.duckieBots.delete(id),
             onLocationUpdate: (id, newLocation) => {
+                console.log("Got location update:", newLocation)
+
                 const carState = this.duckieBots.get(id);
-                if (!carState) return;
+                if (!carState) {
+                    console.error(`Unknown car state for car ${id}`);
+                    return;
+                }
 
                 carState.lastKnownLocation = newLocation;
                 carState.lastSeen = new Date();
@@ -82,6 +88,7 @@ export class SmartCityController {
                 ];
                 const isEnteringRoundabout = roundaboutEnterings.map((c) => c.x == newLocation.x && c.y == newLocation.y)
                     .reduce((p, c) => p || c, false);
+                console.log("Entering roundabout:", isEnteringRoundabout)
 
                 if (isEnteringRoundabout) {
                     console.log(`Car ${id} is entering a roundabout`);
