@@ -14,7 +14,7 @@ FROM docker.io/node:18-alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/dist /app/dist
+COPY --from=builder /app/dist /app/yarn.lock /app/package.json /app/
 
 RUN yarn install --frozen-lockfile --prod
 
