@@ -41,7 +41,7 @@ export class CarCommunicationSocket {
                     case "locationUpdate":
                         const locationMessage = message as CarLocationUpdateMessage;
                         // TODO: call the april tag to location translator here
-                        props.onLocationUpdate(id, {x: 0, y: 0});
+                        props.onLocationUpdate(id, {x: 2, y: 0});
                         break;
                     case "statusUpdate":
                         const statusMessage = message as CarStatusUpdate;
