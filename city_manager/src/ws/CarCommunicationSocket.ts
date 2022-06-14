@@ -50,6 +50,8 @@ export class CarCommunicationSocket {
                     case "speedBumpDetected":
                         const speedBumpMessage = message as SpeedBumpDetectedMessage;
                         // TODO: call the april tag to location translator here
+                        // translate bump aprilTag to coordinates
+
                         props.onSpeedBumpDetected(id, {x: 0, y: 0});
                         break;
                     default:
