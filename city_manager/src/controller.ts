@@ -18,7 +18,7 @@ export class SmartCityController {
     private drivePermissionSocket: DrivePermissionSocket
     private carCommunicationSocket: CarCommunicationSocket
     private duckieBots = new Map<UUID, DuckieBotState>()
-    private bumSet = new Set<Coordinate>;
+    private bumSet = new Set<Coordinate>();
 
     constructor() {
         this.trafficInformationSocket = new TrafficInformationSocket();
