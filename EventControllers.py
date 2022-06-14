@@ -18,6 +18,7 @@ class EventController:
         for _ in range(self.max_connection_retries):
             try:
                 self.ws = await client.connect(self.ws_uri)
+                print(f"[EVENT CONTROLLER] connected to {self.ws_uri}")
 
                 while True:
                     payload = json.loads(await self.ws.recv())
@@ -34,14 +35,14 @@ class EventController:
             finally:
                 if self.ws:
                     await self.ws.close()
-            print(f"retrying connection to {self.ws_uri}")
+            print(f"[EVENT CONTROLLER] retrying connection to {self.ws_uri}")
             await asyncio.sleep(2)
 
 
 
 class CityManagerCommandsEventController(EventController):
 
-    def __init__(city_manager_commands_uri,roundabout_manager):
+    def __init__(self,city_manager_commands_uri,roundabout_manager):
         self.roundabout_manager = roundabout_manager
         EventController.__init__(self,city_manager_commands_uri)
 
@@ -54,9 +55,21 @@ class CityManagerCommandsEventController(EventController):
 
 
     async def handle_car_entering(self,data):
-        print("CAR ENTERING")
+        print("CAR ENTERING EVENT RECEIVED")
         #roundabout_manager.enter_geofence(data)
         print(data)
+        permissionPayload = {
+                'type':'carMoveCommand',
+                'data' : {
+                    'carId' : data['carId']
+                    }
+                }
+        await self.ws.send(json.dumps(permissionPayload))
+
+        print("DATA SENT")
+
+
+
 
     async def handle_car_exiting(self,data):
         print("CAR EXITING")
