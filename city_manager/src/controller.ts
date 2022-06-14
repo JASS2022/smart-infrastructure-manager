@@ -50,15 +50,16 @@ export class SmartCityController {
 
                 //bump section start
 
-                //slow down on bump detection
+                
                 if(this.bumSet.has(newLocation))
-                {
+                {   //slow down on bump detection
                     this.carCommunicationSocket.sendCarCommand(id, "slowDown");
                 }
 
-                //speed up after passing bump
+                
                 if(!this.bumSet.has(newLocation) && carState.speed == "slow")
                 {
+                    //speed up after passing bump
                     this.carCommunicationSocket.sendCarCommand(id, "speedUp");
                 }
                 //bump section end
