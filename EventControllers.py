@@ -47,7 +47,7 @@ class EventController:
                     await self.ws.close()
                 print(
                     f"[EVENT CONTROLLER] retrying connection to {self.ws_uri}")
-            await asyncio.sleep(2)
+            await asyncio.sleep()
 
 
 class CityManagerCommandsEventController(EventController):
@@ -88,7 +88,7 @@ class CityManagerCommandsEventController(EventController):
 
     async def scheduler_task(self):
         while True:
-            await asyncio.sleep(2)
+            await asyncio.sleep(6)
             scheduled_cars = self.roundabout.manage_roundabout()
             for car in scheduled_cars:
                 await self.send_move_command(car.id)

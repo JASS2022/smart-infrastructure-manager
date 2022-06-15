@@ -24,7 +24,11 @@ class VacationStrategy(Strategy):
                     occupancy[index][position-1] = 1
                 car.time_left = len(car.path)
                 toGo.append(car)
-            else:
+            elif occupancy[0][car.path[0]-1] == 1 and car.get_waiting_time() >= 48:
+                break
+        for car in wait_queue:
+            if (toGo.count(car) == 0):
+                car.set_waiting_time()
                 notToGo.append(car)
         return toGo, notToGo
 

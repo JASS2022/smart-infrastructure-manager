@@ -3,6 +3,7 @@
 from typing import List
 import datetime
 from enum import Enum
+import time
 
 
 class State(Enum):
@@ -22,9 +23,13 @@ class Car:
         self.path = []
         self.state = State.WAITING
         self.time_left = 0
+        self.waiting_time = 0
 
     def get_waiting_time(self):
-        return datetime.datetime.now() - self.inGeofence
+        return self.waiting_time
+
+    def set_waiting_time(self):
+        self.waiting_time += 6
 
     def update_path(self, segment):
         self.path = segment
