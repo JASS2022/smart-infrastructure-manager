@@ -91,7 +91,7 @@ class CityManagerCommandsEventController(EventController):
             await asyncio.sleep(2)
             scheduled_cars = self.roundabout.manage_roundabout()
             for car in scheduled_cars:
-                self.send_move_command(car.id)
+                await self.send_move_command(car.id)
 
     async def handle_car_entering(self, data):
         print("CAR ENTERING")
@@ -127,9 +127,9 @@ class CityManagerCommandsEventController(EventController):
     def map_location_data(self, data):
         location_entry = tuple(
             [data["entry"]["x"], data["entry"]["y"]])
-        location_exit = tuple([data["exit"]["x"], data["exit"]["y"]]))
+        location_exit = tuple([data["exit"]["x"], data["exit"]["y"]])
 
-        modified_data={
+        modified_data = {
             "carId": data["carId"],
             "entry": self.scheduling_map[self.location_map[location_entry]],
             "exit": self.scheduling_map[self.location_map[location_exit]]

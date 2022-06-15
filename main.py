@@ -35,7 +35,7 @@ from Strategy import VacationStrategy, Strategy
 
 #     }
 
-CITY_MANAGER_COMMANDS_URI = 'ws://localhost:8765'
+CITY_MANAGER_COMMANDS_URI = 'ws://192.168.149.22:8081'
 # 'wss://jass22.finkmartin.com'
 
 # async def main():
