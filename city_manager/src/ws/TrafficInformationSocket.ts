@@ -46,43 +46,10 @@ export class TrafficInformationSocket {
 			roundabout: trafficInfo.roundabout,
 		};
 		this.subscribers.forEach((subscriber) =>
-			subscriber.send(JSON.stringify(data))
-		);
-	}
-	broadcastDuckieBotMessageUpdate(
-		id: string,
-		name: string,
-		picture: string,
-		lastSeen: string
-	) {
-		const data: DuckieBot = {
-			id: id,
-			name: name,
-			picture: picture,
-			lastSeen: lastSeen,
-		};
-		this.subscribers.forEach((subscriber) =>
-			subscriber.send(JSON.stringify(data))
-		);
-	}
-	broadcastRoundaboutsMessageUpdate(
-		id: string,
-		address: string,
-		x_up: number,
-		x_low: number,
-		y_up: number,
-		y_low: number
-	) {
-		const data: Roundabout = {
-			id: id,
-			address: address,
-			location: {
-				upperLeft: { x: x_up, y: y_up },
-				lowerRight: { x: x_low, y: y_low },
-			},
-		};
-		this.subscribers.forEach((subscriber) =>
-			subscriber.send(JSON.stringify(data))
+			subscriber.send(JSON.stringify(<LocationUpdateMessage>{
+				type: "locationUpdate",
+				data,
+			}))
 		);
 	}
 }
