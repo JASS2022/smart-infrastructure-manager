@@ -1,12 +1,12 @@
 import {Coordinate, UUID} from "./shared";
 
 export interface TrafficInformationMessage {
-    type: "duckieUpdate" | "duckieList" | "roundaboutList"
+    type: "locationUpdate" | "duckieList" | "roundaboutList"
     data: any
 }
 
 export interface LocationUpdateMessage extends TrafficInformationMessage {
-    type: "duckieUpdate"
+    type: "locationUpdate"
     data: LocationUpdate
 }
 

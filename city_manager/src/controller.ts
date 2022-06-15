@@ -100,6 +100,7 @@ export class SmartCityController {
                 if (newLocation.x == carState.trip[tripStops - 1].x && newLocation.y == carState.trip[tripStops - 1].y) {
                     // exiting roundabout
                     this.carCommunicationSocket.sendCarCommand(id, "exitRoundabout");
+                    this.drivePermissionSocket.sendCarExitingMessage(id);
                 }
 
             },
