@@ -8,7 +8,7 @@ const destinations = {
 
 const main = async () => {
     const simulator = new VirtualDuckieManager({
-        delaySecs: 2,
+        delaySecs: 6,
         duckies: [
             {
                 src: 0,
@@ -47,11 +47,33 @@ const main = async () => {
                 dst: destinations.pyramids,
                 name: "duckie1",
                 trip: [
-                    2,
+                    2, null, null,
                     0,
                     20,
                 ],
                 // initialDelay: 1,
+            },
+            {
+                src: 0,
+                dst: destinations.pyramids,
+                name: "duckie1",
+                trip: [
+                    2, null, null,
+                    0,
+                    20,
+                ],
+                initialDelay: 1,
+            },
+            {
+                src: 0,
+                dst: destinations.pyramids,
+                name: "duckie1",
+                trip: [
+                    2, null, null,
+                    0,
+                    20,
+                ],
+                initialDelay: 2,
             },
         ],
     })
