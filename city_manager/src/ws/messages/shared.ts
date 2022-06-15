@@ -26,3 +26,17 @@ export const LocatorCoordinates: Record<number, Coordinate> = {
     6: {x: 1, y: 3},
     0: {x: 3, y: 2},
 }
+
+export const tripVarriations: Coordinate[][] = [
+    [{x: 2, y: 4},{x:2 , y:3 },{x:1 , y: 3},{x: 1, y:2 },{x: 1, y:1 },{x: 2, y:1 },{x:3 , y:1 },{x:3 , y:2 },{x: 3, y: 3},{x:2 , y:3 },{x:2 , y:4 }], //p enter p exit
+    [{x: 2, y: 4},{x: 2, y: 3},{x: 1, y: 2},{x: 1, y: 1},{x:2 , y:1 },{x:2 , y:0 }], // p enter h exit
+    [{x: 2, y: 4},{x: 2, y:3 },{x: 1, y: 3},,{x:1 , y:2 },{x:0 , y:2 }], // p enter gui exit
+
+    [{x: 2, y: 0},{x:2 , y:1 },{x:3 , y: 1},{x: 3, y:2 },{x: 3, y: 3},{x:2 , y:3 },{x:2 , y:4 }], //h enter p exit
+    [{x: 2, y: 0},{x: 2, y: 1},{x: 3, y:1 },{x: 3, y: 2},{x: 3, y: 3},{x:2 , y: 3},{x:1 , y:3 },{x: 1, y: 2},{x: 1, y: 1},{x:2 , y:1 },{x:2 , y:0 }], //h enter h exit
+    [{x: 2, y: 0},{x: 2, y:1 },{x: 3, y:1 },{x:3 , y:2 },{x:3 , y:3 },{x:2 , y:3 },,{x: 1, y: 3},{x:1 , y:2 },{x:0 , y:2 }], // h enter giu exit
+
+    [{x:0, y: 2},{x:1, y:2 },{x:1, y:1 },{x:2, y: 1},{x:3 , y:1 },{x:3 , y:2 },{x: 3, y: 3},{x: 2, y:3 },{x:2 , y:4 }], //giu enter p exit
+    [{x: 0, y: 2},{x:1 , y:2 },{x: 1, y: 1},{x:2 , y:1 },{x:2 , y:0 }], // giu enter hotel exit
+    [{x: 0, y: 2},{x:1 , y: 2},{x: 1, y:1 },{x:2 , y:1 },{x:3 , y:1 },{x: 3, y: 2},{x: 3, y:3 },{x: 2, y:3 },{x: 1, y: 3},{x:1 , y:2 },{x:0 , y:2 }], // giu enter giu exit
+]

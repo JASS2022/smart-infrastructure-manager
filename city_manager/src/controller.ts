@@ -1,7 +1,7 @@
 import {TrafficInformationSocket} from "./ws/TrafficInformationSocket";
 import {DrivePermissionSocket} from "./ws/DrivePermissionSocket";
 import {CarCommunicationSocket} from "./ws/CarCommunicationSocket";
-import {Coordinate, Locator, LocatorCoordinates, UUID} from "./ws/messages/shared";
+import {Coordinate, Locator, LocatorCoordinates, tripVarriations, UUID} from "./ws/messages/shared";
 import {CarStatus} from "./ws/messages/CarStatusMessages";
 
 interface DuckieBotState {
@@ -47,6 +47,7 @@ export class SmartCityController {
                 console.log("Got location update:", newLocation)
 
                 const carState = this.duckieBots.get(id);
+
                 if (!carState) {
                     console.error(`Unknown car state for car ${id}`);
                     return;
@@ -55,6 +56,22 @@ export class SmartCityController {
                 carState.lastKnownLocation = newLocation;
                 carState.lastSeen = new Date();
                 this.duckieBots.set(id, carState);
+
+                const dest = carState.trip[carState.trip.length -1];
+                const initial = carState.lastKnownLocation;
+                for(let i = 0; i < tripVarriations.length; i++) {
+                    if (tripVarriations[i][tripVarriations[i].length -3]?.x === dest?.x && tripVarriations[i][tripVarriations[i].length -3]?.y === dest?.y){
+                        console.log("destination")
+                        console.log(dest)
+                        console.log("initial")
+                        console.log(initial)
+                        if((tripVarriations[i][tripVarriations[i].length -3]?.x === dest?.x && tripVarriations[i][tripVarriations[i].length -3]?.y === dest?.y) && (tripVarriations[i][0]?.x == initial?.x && tripVarriations[i][0]?.y == initial?.y )){
+                            console.log("finally populating the trip array")
+                            carState.trip = tripVarriations[i];
+                        }
+                    }
+                }
+
 
                 //bump section start
 
@@ -74,7 +91,7 @@ export class SmartCityController {
                     id,
                     location: carState.lastKnownLocation,
                     state: "normal", // TODO
-                    trip: [], // TODO
+                    trip: carState.trip,
                     velocity: carState.status.velocity,
                     batteryLevel: carState.status.batteryLevel,
                     roundabout: null,
@@ -96,8 +113,8 @@ export class SmartCityController {
                     this.drivePermissionSocket.requestRoundaboutPermission(id, newLocation, roundaboutEnterings[0]);
                 }
                 // get trip array from car, which includes only one element: then destination and compare with actual destination x and y coordinates
-                const tripStops = carState.trip.length
-                if (newLocation.x == carState.trip[tripStops - 1].x && newLocation.y == carState.trip[tripStops - 1].y) {
+                const tripStops = carState.trip.length;
+                if (newLocation.x == carState.trip[tripStops - 3].x && newLocation.y == carState.trip[tripStops - 3].y) {
                     // exiting roundabout
                     this.carCommunicationSocket.sendCarCommand(id, "exitRoundabout");
                     this.drivePermissionSocket.sendCarExitingMessage(id);
