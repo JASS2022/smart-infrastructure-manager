@@ -27,3 +27,9 @@ class Car:
 
     def update_path(self, segment):
         self.path = segment
+
+    def set_path(self, path):
+        self.path = path
+
+    def decrement_time_left(self):
+        self.time_left -= 1
