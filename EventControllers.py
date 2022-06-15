@@ -7,14 +7,14 @@ from websockets import client, ConnectionClosed
 
 
 class EventController:
-    def __init__(self, uri, roundabout):
+    def __init__(self, uri):
         self.ws_uri = uri
         self.ws = None
         self.event_handlers_lookup_table = {}
         self.max_connection_retries = 10
-        self.network_task = asyncio.create_task(self.event_task(roundabout))
+        self.network_task = asyncio.create_task(self.event_task())
 
-    async def event_task(self, roundabout):
+    async def event_task(self):
         for _ in range(self.max_connection_retries):
             try:
                 self.ws = await client.connect(self.ws_uri)
@@ -25,16 +25,6 @@ class EventController:
                     _type = payload['type']
                     data = payload['data']
                     await self.event_handlers_lookup_table[_type](data)
-
-                    # print("HELOOOOOOOOO")
-                    # if (time.time() - start_time >= 2):
-                    #     scheduled_cars = roundabout.manage_roundabout()
-                    #     for car in scheduled_cars:
-                    #         print("Scheduled")
-                    #         print(car.id)
-
-                    #     # send_move_command(car.id)
-                    #     start_time = time.time()
 
             except ConnectionClosed as e:
                 print('exiting')
@@ -53,7 +43,7 @@ class CityManagerCommandsEventController(EventController):
 
     def __init__(self, city_manager_commands_uri, roundabout):
         self.roundabout = roundabout
-        EventController.__init__(self, city_manager_commands_uri, roundabout)
+        EventController.__init__(self, city_manager_commands_uri)
 
         self.event_handlers_lookup_table = {
             'carEntering': self.handle_car_entering,
@@ -62,15 +52,14 @@ class CityManagerCommandsEventController(EventController):
             'carGoAround': self.handle_car_go_around,
         }
 
-        self.running_scheduler_task = asyncio.create_task(
-            self.scheduler_task())
+        self.running_scheduler_task = asyncio.create_task(self.scheduler_task())
 
     async def scheduler_task(self):
         while True:
             await asyncio.sleep(2)
             scheduled_cars = self.roundabout.manage_roundabout()
             for car in scheduled_cars:
-                self.send_move_command(car.id)
+                asyncio.create_task(self.send_move_command(car.id))
 
     async def handle_car_entering(self, data):
         print("CAR ENTERING")
@@ -101,17 +90,17 @@ class CityManagerCommandsEventController(EventController):
         await self.ws.send(json.dumps(move_command))
 
 
-class CityManagerLocationEventController(EventController):
+# class CityManagerLocationEventController(EventController):
 
-    def __init__(self, city_manager_commands_uri, roundabout):
+#     def __init__(self, city_manager_commands_uri, roundabout):
 
-        self.roundabout = roundabout
-        EventController.__init__(self, city_manager_commands_uri, roundabout)
+#         self.roundabout = roundabout
+#         EventController.__init__(self, city_manager_commands_uri, roundabout)
 
-        self.event_handlers_lookup_table = {
-            'locationUpdate': self.handle_location_update,
-        }
+#         self.event_handlers_lookup_table = {
+#             'locationUpdate': self.handle_location_update,
+#         }
 
-    async def handle_location_update(self, data):
-        print("CAR LOCATION UPDATE")
-        print(data)
+#     async def handle_location_update(self, data):
+#         print("CAR LOCATION UPDATE")
+#         print(data)
