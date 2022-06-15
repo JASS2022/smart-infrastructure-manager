@@ -7,22 +7,22 @@ async def onConnect(ws):
     # mock server
     await ws.send(json.dumps({'type': 'carEntering', 'data': {
         "carId": "1122",
-        "entry": "1",
-        "exit": "2",
+        "entry": {"x": 2, "y": 4},
+        "exit": {"x": 3, "y": 3},
     }}))
     await asyncio.sleep(1)
 
     await ws.send(json.dumps({'type': 'carEntering', 'data': {
         "carId": "1234",
-        "entry": "2",
-        "exit": "3",
+        "entry": {"x": 3, "y": 3},
+        "exit": {"x": 2, "y": 4},
     }}))
     await asyncio.sleep(1)
 
     await ws.send(json.dumps({'type': 'carEntering', 'data': {
         "carId": "54645",
-        "entry": "3",
-        "exit": "2",
+        "entry":  {"x": 2, "y": 0},
+        "exit": {"x": 1, "y": 1},
     }}))
     await asyncio.sleep(1)
 

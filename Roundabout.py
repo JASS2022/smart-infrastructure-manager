@@ -36,7 +36,8 @@ class Roundabout:
         self._strategy = strategy
 
     def enter(self, payload):
-     # instatiate car from payload
+        # instatiate car from payload
+        print('pl: ', payload)
         car = Car(payload["carId"], int(payload["entry"]),
                   int(payload["exit"]), datetime, State.WAITING)
         path = self.generate_path(car.entrance, car.exit)

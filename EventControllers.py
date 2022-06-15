@@ -38,14 +38,15 @@ class EventController:
 
             except ConnectionClosed as e:
                 print('exiting')
-            except KeyError as e:
-                print('error : bad payload : ', e)
-            except Exception as e:
-                print('unknown error : ', e)
+            # except KeyError as e:
+            #     print('error : bad payload : ', e)
+            # except Exception as e:
+            #     print('unknown error : ', e)
             finally:
                 if self.ws:
                     await self.ws.close()
-            print(f"[EVENT CONTROLLER] retrying connection to {self.ws_uri}")
+                print(
+                    f"[EVENT CONTROLLER] retrying connection to {self.ws_uri}")
             await asyncio.sleep(2)
 
 
@@ -66,13 +67,13 @@ class CityManagerCommandsEventController(EventController):
             self.scheduler_task())
 
     location_map = {
-        [2, 4]: 96,
-        [3, 3]: 20,
-        [2, 0]: 2,
-        [1, 1]: 7,
-        [0, 2]: 74,
-        [1, 3]: 6,
-        [3, 2]: 0,
+        tuple([2, 4]): 96,
+        tuple([3, 3]): 20,
+        tuple([2, 0]): 2,
+        tuple([1, 1]): 7,
+        tuple([0, 2]): 74,
+        tuple([1, 3]): 6,
+        tuple([3, 2]): 0,
     }
 
     scheduling_map = {
@@ -96,6 +97,8 @@ class CityManagerCommandsEventController(EventController):
         print("CAR ENTERING")
         print(data["carId"])
         data_modified = self.map_location_data(data)
+        print("CAR HEY")
+        print(data_modified)
         self.roundabout.enter(data_modified)
         # roundabout_manager.enter_geofence(data)
 
@@ -122,18 +125,15 @@ class CityManagerCommandsEventController(EventController):
         await self.ws.send(json.dumps(move_command))
 
     def map_location_data(self, data):
-        location_entry = [int(data["entry"]["x"]), int(data["entry"]["y"])]
-        location_exit = [int(data["exit"]["x"]), int(data["exit"]["y"])]
+        location_entry = tuple(
+            [data["entry"]["x"], data["entry"]["y"]])
+        location_exit = tuple([data["exit"]["x"], data["exit"]["y"]]))
 
-        modified_data = {
-            "data": {
-                "carId": data["carId"],
-                "entry":  self.scheduling_map[self.location_map[location_entry]],
-                "exit": self.scheduling_map[self.location_map[location_exit]]
-            }
+        modified_data={
+            "carId": data["carId"],
+            "entry": self.scheduling_map[self.location_map[location_entry]],
+            "exit": self.scheduling_map[self.location_map[location_exit]]
         }
-        print("test modification")
-        print(modified_data)
         return modified_data
 
 
