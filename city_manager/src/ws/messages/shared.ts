@@ -8,13 +8,13 @@ export type UUID = string;
 export type AprilTag = number;
 
 export const Locator = {
-    "Pyramids Enter":96,
-    "Pyramids Exit":20,
-    "Hotel Enter":2,
-    "Hotel Exit":7,
-    "GIU Enter":74,
-    "GIU Exit":6,
-    "Speed Bump":0
+    "Pyramids Enter": 96,
+    "Pyramids Exit": 20,
+    "Hotel Enter": 2,
+    "Hotel Exit": 7,
+    "GIU Enter": 74,
+    "GIU Exit": 6,
+    "Speed Bump": 0
 }
 
 export const LocatorCoordinates: Record<number, Coordinate> = {

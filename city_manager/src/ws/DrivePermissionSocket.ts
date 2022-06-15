@@ -13,7 +13,7 @@ export class DrivePermissionSocket {
     private wss: ws.Server
 
     constructor(onReceiveDrivePermission: (carId: UUID) => void) {
-        this.wss = new ws.Server({ port: 8081 });
+        this.wss = new ws.Server({port: 8081});
 
         this.wss.on("connection", (ws) => {
             const id = uuid.v4();
