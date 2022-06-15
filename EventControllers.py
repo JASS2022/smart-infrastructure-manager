@@ -19,11 +19,22 @@ class EventController:
             try:
                 self.ws = await client.connect(self.ws_uri)
                 print(f"[EVENT CONTROLLER] connected to {self.ws_uri}")
+
                 while True:
                     payload = json.loads(await self.ws.recv())
                     _type = payload['type']
                     data = payload['data']
                     await self.event_handlers_lookup_table[_type](data)
+
+                    # print("HELOOOOOOOOO")
+                    # if (time.time() - start_time >= 2):
+                    #     scheduled_cars = roundabout.manage_roundabout()
+                    #     for car in scheduled_cars:
+                    #         print("Scheduled")
+                    #         print(car.id)
+
+                    #     # send_move_command(car.id)
+                    #     start_time = time.time()
 
             except ConnectionClosed as e:
                 print('exiting')

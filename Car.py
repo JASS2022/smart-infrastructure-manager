@@ -21,6 +21,7 @@ class Car:
         self.inGeofence = datetime.datetime.now()
         self.path = []
         self.state = State.WAITING
+        self.time_left = 0
 
     def get_waiting_time(self):
         return datetime.datetime.now() - self.inGeofence
