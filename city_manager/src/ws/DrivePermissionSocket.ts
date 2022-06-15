@@ -44,6 +44,14 @@ export class DrivePermissionSocket {
     public requestRoundaboutPermission(carId: UUID, entry: Coordinate, exit: Coordinate) {
         // Since we assume we have a single roundabout for now, we just send this to all connected roundabouts
         this.subscribers.forEach((socket) => {
+            console.log("sending:", JSON.stringify(<CarEnteringMessage>{
+                type: "carEntering",
+                data: {
+                    carId,
+                    entry,
+                    exit,
+                },
+            }))
             socket.send(JSON.stringify(<CarEnteringMessage>{
                 type: "carEntering",
                 data: {
